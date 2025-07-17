@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="cabecalho :: head"></div>
+    <title>Sistema Acadêmico - Formulário Matrícula</title>
+    <style>
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+        }
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 3rem;
+            margin: 2rem 0;
+        }
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-custom {
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            font-weight: bold;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+        }
+        .btn-secondary-custom {
+            background: linear-gradient(45deg, #6c757d, #5a6268);
+            border: none;
+            color: white;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .form-label {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        .icon-input {
+            position: relative;
+        }
+        .icon-input::before {
+            content: attr(data-icon);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            font-size: 1.2rem;
+        }
+        .icon-input .form-control {
+            padding-left: 3rem;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        .select-custom select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">🏠 Início</a>
+                <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
+                <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
+                <a class="nav-link" href="/courses">📚 Cursos</a>
+                <a class="nav-link" href="/enrollments">📝 Matrículas</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section text-center">
+            <h1 class="display-4">📝 Cadastro de Matrícula</h1>
+            <p class="lead">Matricule um aluno em um curso</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-card">
+                    <!-- Error Message -->
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <span th:text="${error}"></span>
+                    </div>
+                    
+                    <form action="#" 
+                          method="POST" 
+                          th:action="@{/enrollments/new}"
+                          th:object="${enrollment}">
+                        
+                        <input type="hidden" id="id" th:field="*{id}">
+                        
+                        <div class="row">
+                            <!-- Seleção de Aluno -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="student" class="form-label">👨‍🎓 Aluno</label>
+                                    <div class="icon-input" data-icon="👨‍🎓">
+                                        <select id="student" 
+                                                th:field="*{student.id}" 
+                                                class="form-control select-custom">
+                                            <option value="">Selecione o aluno</option>
+                                            <option th:each="user : ${users}" 
+                                                    th:value="${user.id}" 
+                                                    th:text="${user.name + ' (' + user.email + ')'}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('student')}"
+                                         th:errors="*{student}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Seleção de Curso -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="course" class="form-label">📚 Curso</label>
+                                    <div class="icon-input" data-icon="📚">
+                                        <select id="course" 
+                                                th:field="*{course.id}" 
+                                                class="form-control select-custom">
+                                            <option value="">Selecione o curso</option>
+                                            <option th:each="course : ${courses}" 
+                                                    th:value="${course.id}" 
+                                                    th:text="${course.name + ' (' + course.modality + ')'}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('course')}"
+                                         th:errors="*{course}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Data de Matrícula -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="enrollmentDate" class="form-label">📅 Data de Matrícula</label>
+                                    <div class="icon-input" data-icon="📅">
+                                        <input type="date" 
+                                               id="enrollmentDate" 
+                                               th:field="*{enrollmentDate}" 
+                                               class="form-control">
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('enrollmentDate')}"
+                                         th:errors="*{enrollmentDate}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Status -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="status" class="form-label">📊 Status</label>
+                                    <div class="icon-input" data-icon="📊">
+                                        <select id="status" 
+                                                th:field="*{status}" 
+                                                class="form-control select-custom">
+                                            <option th:each="status : ${T(br.edu.ifsuldeminas.mch.springbootcrud.model.entity.EnrollmentStatus).values()}" 
+                                                    th:value="${status}" 
+                                                    th:text="${status.description}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('status')}"
+                                         th:errors="*{status}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Nota Final -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="finalGrade" class="form-label">📈 Nota Final (opcional)</label>
+                                    <div class="icon-input" data-icon="📈">
+                                        <input type="number" 
+                                               id="finalGrade" 
+                                               th:field="*{finalGrade}" 
+                                               class="form-control"
+                                               min="0" 
+                                               max="10" 
+                                               step="0.1"
+                                               placeholder="Ex: 8.5">
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('finalGrade')}"
+                                         th:errors="*{finalGrade}"
+                                         class="error-message">
+                                    </div>
+                                    <small class="form-text text-muted">Nota de 0 a 10</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Botões -->
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-custom btn-primary-custom">
+                                💾 Salvar Matrícula
+                            </button>
+                            <a href="/enrollments" class="btn btn-custom btn-secondary-custom">
+                                ❌ Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

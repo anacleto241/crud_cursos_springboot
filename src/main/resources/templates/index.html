@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="cabecalho :: head"></div>
+    <title>Sistema Acadêmico - Alunos</title>
+    <style>
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+        }
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .table-custom {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .btn-custom {
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            margin: 0 0.25rem;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+        }
+        .btn-danger-custom {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            border: none;
+        }
+        .btn-success-custom {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">🏠 Início</a>
+                <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
+                <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
+                <a class="nav-link" href="/courses">📚 Cursos</a>
+                <a class="nav-link" href="/enrollments">📝 Matrículas</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section text-center">
+            <h1 class="display-4">👨‍🎓 Gerenciamento de Alunos</h1>
+            <p class="lead">Administre os estudantes da instituição</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="card card-custom">
+            <div class="card-body text-center">
+                <a th:href="@{/users/form}" 
+                   class="btn btn-success btn-custom btn-success-custom">
+                    ➕ Adicionar Novo Aluno
+                </a>
+                <a href="/" class="btn btn-secondary btn-custom">
+                    🏠 Voltar ao Menu
+                </a>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="table-custom" th:if="${not #lists.isEmpty(usuarios)}">
+            <table class="table table-hover mb-0">
+                <thead style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col">👤 Nome</th>
+                        <th scope="col">⚥ Gênero</th>
+                        <th scope="col">📧 Email</th>
+                        <th scope="col">🏠 Endereço</th>
+                        <th scope="col" class="text-center">⚙️ Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${usuarios}" class="table-row-hover">
+                        <td class="text-center font-weight-bold" th:text="${user.id}"></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-3" 
+                                     style="width: 40px; height: 40px;">
+                                    <span th:text="${#strings.substring(user.name, 0, 1)}"></span>
+                                </div>
+                                <strong th:text="${user.name}"></strong>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-info p-2" th:text="${user.gender}"></span>
+                        </td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.address.place + ', nº ' + user.address.number}"></td>
+                        <td class="text-center">
+                            <a th:href="@{/users/update/{id}(id=${user.id})}"
+                               class="btn btn-primary btn-sm btn-custom btn-primary-custom"
+                               title="Editar Aluno">
+                                ✏️ Editar
+                            </a>
+                            
+                            <a th:href="@{/users/delete/{id}(id=${user.id})}"
+                               class="btn btn-danger btn-sm btn-custom btn-danger-custom"
+                               title="Excluir Aluno"
+                               onclick="return confirm('Tem certeza que deseja excluir este aluno?')">
+                                🗑️ Excluir
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(usuarios)}" class="card card-custom text-center">
+            <div class="card-body py-5">
+                <h3 class="text-muted">📭 Nenhum aluno cadastrado</h3>
+                <p class="text-muted mb-4">Comece adicionando o primeiro aluno ao sistema!</p>
+                <a th:href="@{/users/form}" 
+                   class="btn btn-success btn-custom btn-success-custom">
+                    ➕ Adicionar Primeiro Aluno
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics Card -->
+        <div class="card card-custom mt-4" th:if="${not #lists.isEmpty(usuarios)}">
+            <div class="card-body text-center">
+                <h5 class="card-title">📊 Estatísticas</h5>
+                <p class="card-text">
+                    <strong th:text="${#lists.size(usuarios)}"></strong> aluno(s) cadastrado(s) no sistema
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

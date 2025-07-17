@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="cabecalho :: head"></div>
+    <title>Sistema Acadêmico - Formulário Aluno</title>
+    <style>
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+        }
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 3rem;
+            margin: 2rem 0;
+        }
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-custom {
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            font-weight: bold;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+        }
+        .btn-secondary-custom {
+            background: linear-gradient(45deg, #6c757d, #5a6268);
+            border: none;
+            color: white;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .form-label {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        .icon-input {
+            position: relative;
+        }
+        .icon-input::before {
+            content: attr(data-icon);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            font-size: 1.2rem;
+        }
+        .icon-input .form-control {
+            padding-left: 3rem;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            color: #667eea;
+            font-weight: bold;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .select-custom select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">🏠 Início</a>
+                <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
+                <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
+                <a class="nav-link" href="/courses">📚 Cursos</a>
+                <a class="nav-link" href="/enrollments">📝 Matrículas</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section text-center">
+            <h1 class="display-4">👨‍🎓 Cadastro de Aluno</h1>
+            <p class="lead">Preencha os dados do estudante</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="form-card">
+                    <form action="#" 
+                          method="POST" 
+                          th:action="@{/users/new}"
+                          th:object="${user}">
+                        
+                        <input type="hidden" id="id" th:field="*{id}">
+                        
+                        <!-- Dados Pessoais -->
+                        <h3 class="section-title">👤 Dados Pessoais</h3>
+                        
+                        <div class="row">
+                            <!-- Nome -->
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">👤 Nome Completo</label>
+                                    <div class="icon-input" data-icon="👤">
+                                        <input type="text" 
+                                               id="name" 
+                                               th:field="*{name}" 
+                                               class="form-control"
+                                               placeholder="Digite o nome completo do aluno">
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('name')}"
+                                         th:errors="*{name}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Gênero -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="gender" class="form-label">⚥ Gênero</label>
+                                    <div class="icon-input" data-icon="⚥">
+                                        <select id="gender" 
+                                                th:field="*{gender}" 
+                                                class="form-control select-custom">
+                                            <option value="">Selecione o gênero</option>
+                                            <option th:each="genderOption : ${T(br.edu.ifsuldeminas.mch.springbootcrud.model.entity.User.Gender).values()}" 
+                                                    th:value="${genderOption}" 
+                                                    th:text="${genderOption == T(br.edu.ifsuldeminas.mch.springbootcrud.model.entity.User.Gender).M ? 'Masculino' : 'Feminino'}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('gender')}"
+                                         th:errors="*{gender}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email" class="form-label">📧 Email</label>
+                            <div class="icon-input" data-icon="📧">
+                                <input type="email" 
+                                       id="email" 
+                                       th:field="*{email}" 
+                                       class="form-control"
+                                       placeholder="aluno@email.com">
+                            </div>
+                            <div th:if="${#fields.hasErrors('email')}"
+                                 th:errors="*{email}"
+                                 class="error-message">
+                            </div>
+                        </div>
+                        
+                        <!-- Dados do Endereço -->
+                        <h3 class="section-title">🏠 Endereço Residencial</h3>
+                        
+                        <input type="hidden" id="addressId" th:field="*{address.id}">
+                        
+                        <div class="row">
+                            <!-- Rua -->
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="place" class="form-label">🏠 Rua/Logradouro</label>
+                                    <div class="icon-input" data-icon="🏠">
+                                        <input type="text" 
+                                               id="place" 
+                                               th:field="*{address.place}" 
+                                               class="form-control"
+                                               placeholder="Digite o nome da rua">
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('address.place')}"
+                                         th:errors="*{address.place}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Número -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="number" class="form-label">🔢 Número</label>
+                                    <div class="icon-input" data-icon="🔢">
+                                        <input type="number" 
+                                               id="number" 
+                                               th:field="*{address.number}" 
+                                               class="form-control"
+                                               placeholder="123">
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('address.number')}"
+                                         th:errors="*{address.number}"
+                                         class="error-message">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- CEP -->
+                        <div class="form-group">
+                            <label for="zipCode" class="form-label">📮 CEP</label>
+                            <div class="icon-input" data-icon="📮">
+                                <input type="text" 
+                                       id="zipCode" 
+                                       th:field="*{address.zipCode}" 
+                                       class="form-control"
+                                       placeholder="00000-000">
+                            </div>
+                            <div th:if="${#fields.hasErrors('address.zipCode')}"
+                                 th:errors="*{address.zipCode}"
+                                 class="error-message">
+                            </div>
+                        </div>
+                        
+                        <!-- Botões -->
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-custom btn-primary-custom">
+                                💾 Salvar Aluno
+                            </button>
+                            <a href="/users" class="btn btn-custom btn-secondary-custom">
+                                ❌ Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Máscara de CEP -->
+    <script>
+        document.getElementById('zipCode').addEventListener('input', function (e) {
+            var value = e.target.value.replace(/\D/g, '');
+            var formattedValue = '';
+            
+            if (value.length > 0) {
+                formattedValue = value.substring(0, 5);
+            }
+            if (value.length > 5) {
+                formattedValue += '-' + value.substring(5, 8);
+            }
+            
+            e.target.value = formattedValue;
+        });
+    </script>
+</body>
+</html>

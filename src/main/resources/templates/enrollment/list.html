@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="cabecalho :: head"></div>
+    <title>Sistema Acadêmico - Matrículas</title>
+    <style>
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+        }
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .table-custom {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .btn-custom {
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            margin: 0 0.25rem;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+        }
+        .btn-danger-custom {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            border: none;
+        }
+        .btn-success-custom {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+        .status-active { background: #28a745; color: white; }
+        .status-completed { background: #007bff; color: white; }
+        .status-cancelled { background: #dc3545; color: white; }
+        .status-suspended { background: #ffc107; color: black; }
+    </style>
+</head>
+
+<body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">🏠 Início</a>
+                <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
+                <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
+                <a class="nav-link" href="/courses">📚 Cursos</a>
+                <a class="nav-link" href="/enrollments">📝 Matrículas</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section text-center">
+            <h1 class="display-4">📝 Gerenciamento de Matrículas</h1>
+            <p class="lead">Administre as matrículas dos alunos nos cursos</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="card card-custom">
+            <div class="card-body text-center">
+                <a th:href="@{/enrollments/form}" 
+                   class="btn btn-success btn-custom btn-success-custom">
+                    ➕ Nova Matrícula
+                </a>
+                <a href="/" class="btn btn-secondary btn-custom">
+                    🏠 Voltar ao Menu
+                </a>
+            </div>
+        </div>
+
+        <!-- Enrollments Table -->
+        <div class="table-custom" th:if="${not #lists.isEmpty(enrollments)}">
+            <table class="table table-hover mb-0">
+                <thead style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col">👨‍🎓 Aluno</th>
+                        <th scope="col">📚 Curso</th>
+                        <th scope="col">👨‍🏫 Professor</th>
+                        <th scope="col">📅 Data Matrícula</th>
+                        <th scope="col">📊 Status</th>
+                        <th scope="col">📈 Nota Final</th>
+                        <th scope="col" class="text-center">⚙️ Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="enrollment : ${enrollments}" class="table-row-hover">
+                        <td class="text-center font-weight-bold" th:text="${enrollment.id}"></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mr-3" 
+                                     style="width: 40px; height: 40px;">
+                                    <span th:text="${enrollment.student != null ? #strings.substring(enrollment.student.name, 0, 1) : '?'}"></span>
+                                </div>
+                                <div>
+                                    <strong th:text="${enrollment.student != null ? enrollment.student.name : 'Não definido'}"></strong><br>
+                                    <small class="text-muted" th:text="${enrollment.student != null ? enrollment.student.email : ''}"></small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center mr-3" 
+                                     style="width: 40px; height: 40px;">
+                                    📚
+                                </div>
+                                <div>
+                                    <strong th:text="${enrollment.course != null ? enrollment.course.name : 'Não definido'}"></strong><br>
+                                    <small class="badge badge-info" th:text="${enrollment.course != null ? enrollment.course.modality : ''}"></small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center mr-2" 
+                                     style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                    <span th:text="${enrollment.course != null && enrollment.course.teacher != null ? #strings.substring(enrollment.course.teacher.name, 0, 1) : '?'}"></span>
+                                </div>
+                                <span th:text="${enrollment.course != null && enrollment.course.teacher != null ? enrollment.course.teacher.name : 'Não definido'}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <span th:text="${#dates.format(enrollment.enrollmentDate, 'dd/MM/yyyy')}"></span>
+                        </td>
+                        <td>
+                            <span class="status-badge"
+                                  th:classappend="${enrollment.status.name() == 'ACTIVE' ? 'status-active' : 
+                                                  enrollment.status.name() == 'COMPLETED' ? 'status-completed' : 
+                                                  enrollment.status.name() == 'CANCELLED' ? 'status-cancelled' : 'status-suspended'}"
+                                  th:text="${enrollment.status.description}">
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span th:if="${enrollment.finalGrade != null}" 
+                                  th:text="${#numbers.formatDecimal(enrollment.finalGrade, 1, 2)}"
+                                  class="badge badge-primary p-2"></span>
+                            <span th:unless="${enrollment.finalGrade != null}" 
+                                  class="text-muted">-</span>
+                        </td>
+                        <td class="text-center">
+                            <a th:href="@{/enrollments/update/{id}(id=${enrollment.id})}"
+                               class="btn btn-primary btn-sm btn-custom btn-primary-custom"
+                               title="Editar Matrícula">
+                                ✏️ Editar
+                            </a>
+                            
+                            <a th:href="@{/enrollments/delete/{id}(id=${enrollment.id})}"
+                               class="btn btn-danger btn-sm btn-custom btn-danger-custom"
+                               title="Excluir Matrícula"
+                               onclick="return confirm('Tem certeza que deseja excluir esta matrícula?')">
+                                🗑️ Excluir
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(enrollments)}" class="card card-custom text-center">
+            <div class="card-body py-5">
+                <h3 class="text-muted">📭 Nenhuma matrícula encontrada</h3>
+                <p class="text-muted mb-4">Comece criando a primeira matrícula no sistema!</p>
+                <a th:href="@{/enrollments/form}" 
+                   class="btn btn-success btn-custom btn-success-custom">
+                    ➕ Criar Primeira Matrícula
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics Card -->
+        <div class="card card-custom mt-4" th:if="${not #lists.isEmpty(enrollments)}">
+            <div class="card-body text-center">
+                <h5 class="card-title">📊 Estatísticas</h5>
+                <p class="card-text">
+                    <strong th:text="${#lists.size(enrollments)}"></strong> matrícula(s) cadastrada(s) no sistema
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

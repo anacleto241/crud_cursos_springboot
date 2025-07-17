@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="cabecalho :: head"></div>
+    <title>Sistema Acadêmico - Cursos</title>
+    <style>
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+        }
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .table-custom {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .btn-custom {
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            margin: 0 0.25rem;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+        }
+        .btn-danger-custom {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            border: none;
+        }
+        .btn-success-custom {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        .course-card {
+            border-left: 5px solid #667eea;
+            margin-bottom: 1rem;
+        }
+        .date-badge {
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">🏠 Início</a>
+                <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
+                <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
+                <a class="nav-link" href="/courses">📚 Cursos</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header-section text-center">
+            <h1 class="display-4">📚 Gerenciamento de Cursos</h1>
+            <p class="lead">Administre os cursos da instituição</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="card card-custom">
+            <div class="card-body text-center">
+                <a th:href="@{/courses/form}" 
+                   class="btn btn-success btn-custom btn-success-custom">
+                    ➕ Adicionar Novo Curso
+                </a>
+                <a href="/" class="btn btn-secondary btn-custom">
+                    🏠 Voltar ao Menu
+                </a>
+            </div>
+        </div>
+
+        <!-- Courses Table -->
+        <div class="table-custom" th:if="${not #lists.isEmpty(courses)}">
+            <table class="table table-hover mb-0">
+                <thead style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col">📚 Nome do Curso</th>
+                        <th scope="col">💻 Modalidade</th>
+                        <th scope="col">👨‍ Professor</th>
+                        <th scope="col">📅 Período</th>
+                        <th scope="col" class="text-center">⚙️ Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="course : ${courses}" class="table-row-hover">
+                        <td class="text-center font-weight-bold" th:text="${course.id}"></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center mr-3" 
+                                     style="width: 40px; height: 40px;">
+                                    📚
+                                </div>
+                                <strong th:text="${course.name}"></strong>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-info p-2" th:text="${course.modality}"></span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center mr-2" 
+                                     style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                    <span th:text="${course.teacher != null ? #strings.substring(course.teacher.name, 0, 1) : '?'}"></span>
+                                </div>
+                                <span th:text="${course.teacher != null ? course.teacher.name : 'Não definido'}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <small class="badge badge-success date-badge">
+                                    📅 Início: <span th:text="${#dates.format(course.startDate, 'dd/MM/yyyy')}"></span>
+                                </small><br>
+                                <small class="badge badge-danger date-badge">
+                                    🏁 Fim: <span th:text="${#dates.format(course.endDate, 'dd/MM/yyyy')}"></span>
+                                </small>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <a th:href="@{/courses/update/{id}(id=${course.id})}"
+                               class="btn btn-primary btn-sm btn-custom btn-primary-custom"
+                               title="Editar Curso">
+                                ✏️ Editar
+                            </a>
+                            
+                            <a th:href="@{/courses/delete/{id}(id=${course.id})}"
+                               class="btn btn-danger btn-sm btn-custom btn-danger-custom"
+                               title="Excluir Curso"
+                               onclick="return confirm('Tem certeza que deseja excluir este curso?')">
+                                🗑️ Excluir
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(courses)}" class="card card-custom text-center">
+            <div class="card-body py-5">
+                <h3 class="text-muted">📭 Nenhum curso cadastrado</h3>
+                <p class="text-muted mb-4">Comece adicionando o primeiro curso ao sistema!</p>
+                <a th:href="@{/courses/form}" 
+                   class="btn btn-success btn-custom btn-success-custom">
+                    ➕ Adicionar Primeiro Curso
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics Card -->
+        <div class="card card-custom mt-4" th:if="${not #lists.isEmpty(courses)}">
+            <div class="card-body text-center">
+                <h5 class="card-title">📊 Estatísticas</h5>
+                <p class="card-text">
+                    <strong th:text="${#lists.size(courses)}"></strong> curso(s) cadastrado(s) no sistema
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

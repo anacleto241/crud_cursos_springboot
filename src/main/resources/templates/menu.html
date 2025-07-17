@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="cabecalho :: head"></div>
+    <title>Sistema Acadêmico - Menu Principal</title>
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .card-menu {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            background: white;
+            overflow: hidden;
+        }
+        .card-menu:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-menu .card-body {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .btn-menu {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        .btn-menu:hover {
+            color: white;
+            text-decoration: none;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .stats-card {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .navbar-custom {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: #6c757d;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+    
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/">🏠 Início</a>
+                <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
+                <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
+                <a class="nav-link" href="/courses">📚 Cursos</a>
+                <a class="nav-link" href="/enrollments">📝 Matrículas</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="display-3">🎓 Sistema Acadêmico</h1>
+            <p class="lead">Plataforma completa para gestão educacional</p>
+            <p class="mb-0">Gerencie alunos, professores e cursos de forma simples e eficiente</p>
+        </div>
+
+        <!-- Menu Cards -->
+        <div class="row">
+            <!-- Alunos -->
+            <div class="col-md-3">
+                <div class="card card-menu">
+                    <div class="card-body">
+                        <div class="card-icon">👨‍🎓</div>
+                        <h4 class="card-title">Alunos</h4>
+                        <p class="card-text">Gerencie o cadastro de alunos e suas informações.</p>
+                        <ul class="feature-list">
+                            <li>Cadastro completo</li>
+                            <li>Dados pessoais</li>
+                            <li>Informações de contato</li>
+                            <li>Endereço residencial</li>
+                        </ul>
+                        <a href="/users" class="btn btn-menu">Gerenciar Alunos</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professores -->
+            <div class="col-md-3">
+                <div class="card card-menu">
+                    <div class="card-body">
+                        <div class="card-icon">👨‍🏫</div>
+                        <h4 class="card-title">Professores</h4>
+                        <p class="card-text">Administre o corpo docente e especializações.</p>
+                        <ul class="feature-list">
+                            <li>Dados do professor</li>
+                            <li>Especialização</li>
+                            <li>Contato profissional</li>
+                            <li>Histórico acadêmico</li>
+                        </ul>
+                        <a href="/teachers" class="btn btn-menu">Gerenciar Professores</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cursos -->
+            <div class="col-md-3">
+                <div class="card card-menu">
+                    <div class="card-body">
+                        <div class="card-icon">📚</div>
+                        <h4 class="card-title">Cursos</h4>
+                        <p class="card-text">Controle os cursos oferecidos pela instituição.</p>
+                        <ul class="feature-list">
+                            <li>Modalidades diversas</li>
+                            <li>Período letivo</li>
+                            <li>Vinculação com professores</li>
+                            <li>Controle de oferta</li>
+                        </ul>
+                        <a href="/courses" class="btn btn-menu">Gerenciar Cursos</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matrículas -->
+            <div class="col-md-3">
+                <div class="card card-menu">
+                    <div class="card-body">
+                        <div class="card-icon">📝</div>
+                        <h4 class="card-title">Matrículas</h4>
+                        <p class="card-text">Gerencie as matrículas dos alunos nos cursos.</p>
+                        <ul class="feature-list">
+                            <li>Inscrição em cursos</li>
+                            <li>Status da matrícula</li>
+                            <li>Notas finais</li>
+                            <li>Histórico acadêmico</li>
+                        </ul>
+                        <a href="/enrollments" class="btn btn-menu">Gerenciar Matrículas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Segunda linha se necessário -->
+        <div class="row" th:if="false">
+
+        <!-- Statistics Section -->
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="stats-card">
+                    <h3>📊 Estatísticas do Sistema</h3>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <h2>👨‍🎓</h2>
+                            <h4>Alunos Cadastrados</h4>
+                            <p>Gerencie todos os estudantes da instituição</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h2>👨‍🏫</h2>
+                            <h4>Professores Ativos</h4>
+                            <p>Corpo docente qualificado e especializado</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h2>📚</h2>
+                            <h4>Cursos Oferecidos</h4>
+                            <p>Diversas modalidades e áreas de conhecimento</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card card-menu">
+                    <div class="card-body">
+                        <h4 class="card-title">🚀 Ações Rápidas</h4>
+                        <p class="card-text mb-4">Acesse rapidamente as principais funcionalidades do sistema</p>
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <a href="/users/form" class="btn btn-menu mb-2">➕ Novo Aluno</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/teachers/form" class="btn btn-menu mb-2">➕ Novo Professor</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/enrollments/form" class="btn btn-menu mb-2">➕ Nova Matrícula</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="#" class="btn btn-menu mb-2" onclick="alert('Em desenvolvimento!')">📊 Relatórios</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-4 mt-5">
+            <p class="text-muted">© 2025 Sistema Acadêmico - Desenvolvido com Spring Boot & Thymeleaf</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
