@@ -59,7 +59,7 @@
 <body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
     
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+      <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
             <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
             <div class="navbar-nav ml-auto">
@@ -67,6 +67,7 @@
                 <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
                 <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
                 <a class="nav-link" href="/courses">📚 Cursos</a>
+                <a class="nav-link" href="/enrollments">📝 Matrículas</a>
             </div>
         </div>
     </nav>
@@ -99,8 +100,9 @@
                         <th scope="col" class="text-center">#</th>
                         <th scope="col">📚 Nome do Curso</th>
                         <th scope="col">💻 Modalidade</th>
-                        <th scope="col">👨‍ Professor</th>
-                        <th scope="col">📅 Período</th>
+                        <th scope="col">👨‍🏫 Professor</th>
+                        <th scope="col">� Descrição</th>
+                        <th scope="col">⏱️ Carga Horária</th>
                         <th scope="col" class="text-center">⚙️ Ações</th>
                     </tr>
                 </thead>
@@ -129,14 +131,13 @@
                             </div>
                         </td>
                         <td>
-                            <div>
-                                <small class="badge badge-success date-badge">
-                                    📅 Início: <span th:text="${#dates.format(course.startDate, 'dd/MM/yyyy')}"></span>
-                                </small><br>
-                                <small class="badge badge-danger date-badge">
-                                    🏁 Fim: <span th:text="${#dates.format(course.endDate, 'dd/MM/yyyy')}"></span>
-                                </small>
-                            </div>
+                            <span class="text-muted" style="font-size: 0.9rem;"
+                                  th:text="${#strings.length(course.description) > 50 ? #strings.substring(course.description, 0, 50) + '...' : course.description}"></span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge badge-primary p-2">
+                                ⏱️ <span th:text="${course.workloadHours}"></span>h
+                            </span>
                         </td>
                         <td class="text-center">
                             <a th:href="@{/courses/update/{id}(id=${course.id})}"

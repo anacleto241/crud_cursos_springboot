@@ -19,7 +19,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@NotBlank(message = "Nome do usuário não pode ser vazio.")
 	private String name;
@@ -53,7 +53,7 @@ public class User {
 		return address;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -81,7 +81,7 @@ public class User {
 		this.email = email;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	

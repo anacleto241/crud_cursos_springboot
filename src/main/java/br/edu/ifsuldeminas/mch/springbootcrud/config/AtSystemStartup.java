@@ -108,28 +108,22 @@ public class AtSystemStartup implements CommandLineRunner {
 		Course curso1 = new Course();
 		curso1.setName("Programação Java Avançada");
 		curso1.setModality("Presencial");
-		curso1.setStartDate(new Date());
-		Date endDate1 = new Date();
-		endDate1.setTime(endDate1.getTime() + (90L * 24 * 60 * 60 * 1000)); // 90 dias
-		curso1.setEndDate(endDate1);
+		curso1.setDescription("Curso completo de programação Java com Spring Boot, frameworks e boas práticas de desenvolvimento orientado a objetos.");
+		curso1.setWorkloadHours(120);
 		curso1.setTeacher(prof1);
 		
 		Course curso2 = new Course();
 		curso2.setName("Algoritmos e Estruturas de Dados");
 		curso2.setModality("Online");
-		curso2.setStartDate(new Date());
-		Date endDate2 = new Date();
-		endDate2.setTime(endDate2.getTime() + (120L * 24 * 60 * 60 * 1000)); // 120 dias
-		curso2.setEndDate(endDate2);
+		curso2.setDescription("Fundamentos de algoritmos, estruturas de dados lineares e não-lineares, análise de complexidade e otimização.");
+		curso2.setWorkloadHours(80);
 		curso2.setTeacher(prof2);
 		
 		Course curso3 = new Course();
 		curso3.setName("Desenvolvimento Web Full Stack");
 		curso3.setModality("Híbrido");
-		curso3.setStartDate(new Date());
-		Date endDate3 = new Date();
-		endDate3.setTime(endDate3.getTime() + (180L * 24 * 60 * 60 * 1000)); // 180 dias
-		curso3.setEndDate(endDate3);
+		curso3.setDescription("Desenvolvimento completo de aplicações web utilizando tecnologias modernas como React, Node.js, APIs REST e Deploy na nuvem.");
+		curso3.setWorkloadHours(160);
 		curso3.setTeacher(prof3);
 		
 		courseRepository.save(curso1);

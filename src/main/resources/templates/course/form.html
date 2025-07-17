@@ -101,7 +101,7 @@
 <body style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
     
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+      <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
             <a class="navbar-brand" href="/">🎓 Sistema Acadêmico</a>
             <div class="navbar-nav ml-auto">
@@ -109,6 +109,7 @@
                 <a class="nav-link" href="/users">👨‍🎓 Alunos</a>
                 <a class="nav-link" href="/teachers">👨‍🏫 Professores</a>
                 <a class="nav-link" href="/courses">📚 Cursos</a>
+                <a class="nav-link" href="/enrollments">📝 Matrículas</a>
             </div>
         </div>
     </nav>
@@ -173,35 +174,40 @@
                         </div>
                         
                         <div class="row">
-                            <!-- Data de Início -->
-                            <div class="col-md-6">
+                            <!-- Descrição -->
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="startDate" class="form-label">📅 Data de Início</label>
-                                    <div class="icon-input" data-icon="📅">
-                                        <input type="date" 
-                                               id="startDate" 
-                                               th:field="*{startDate}" 
-                                               class="form-control">
+                                    <label for="description" class="form-label">� Descrição do Curso</label>
+                                    <div class="icon-input" data-icon="�">
+                                        <textarea id="description" 
+                                                  th:field="*{description}" 
+                                                  class="form-control"
+                                                  rows="4"
+                                                  placeholder="Descreva o conteúdo e objetivos do curso"></textarea>
                                     </div>
-                                    <div th:if="${#fields.hasErrors('startDate')}"
-                                         th:errors="*{startDate}"
+                                    <div th:if="${#fields.hasErrors('description')}"
+                                         th:errors="*{description}"
                                          class="error-message">
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Data de Término -->
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Carga Horária -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="endDate" class="form-label">🏁 Data de Término</label>
-                                    <div class="icon-input" data-icon="🏁">
-                                        <input type="date" 
-                                               id="endDate" 
-                                               th:field="*{endDate}" 
-                                               class="form-control">
+                                    <label for="workloadHours" class="form-label">⏱️ Carga Horária (horas)</label>
+                                    <div class="icon-input" data-icon="⏱️">
+                                        <input type="number" 
+                                               id="workloadHours" 
+                                               th:field="*{workloadHours}" 
+                                               class="form-control"
+                                               min="1"
+                                               placeholder="Ex: 40">
                                     </div>
-                                    <div th:if="${#fields.hasErrors('endDate')}"
-                                         th:errors="*{endDate}"
+                                    <div th:if="${#fields.hasErrors('workloadHours')}"
+                                         th:errors="*{workloadHours}"
                                          class="error-message">
                                     </div>
                                 </div>
