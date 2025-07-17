@@ -146,7 +146,7 @@
                             </div>
                         </td>
                         <td>
-                            <span th:text="${#dates.format(enrollment.enrollmentDate, 'dd/MM/yyyy')}"></span>
+                            <span th:text="${enrollment.enrollmentDate}"></span>
                         </td>
                         <td>
                             <span class="status-badge"
@@ -155,13 +155,6 @@
                                                   enrollment.status.name() == 'CANCELLED' ? 'status-cancelled' : 'status-suspended'}"
                                   th:text="${enrollment.status.description}">
                             </span>
-                        </td>
-                        <td class="text-center">
-                            <span th:if="${enrollment.finalGrade != null}" 
-                                  th:text="${#numbers.formatDecimal(enrollment.finalGrade, 1, 2)}"
-                                  class="badge badge-primary p-2"></span>
-                            <span th:unless="${enrollment.finalGrade != null}" 
-                                  class="text-muted">-</span>
                         </td>
                         <td class="text-center">
                             <a th:href="@{/enrollments/update/{id}(id=${enrollment.id})}"

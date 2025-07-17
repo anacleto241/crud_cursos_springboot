@@ -1,6 +1,6 @@
 package br.edu.ifsuldeminas.mch.springbootcrud.model.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,8 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -33,21 +31,18 @@ public class Enrollment {
     @NotNull(message = "Curso deve ser selecionado.")
     private Course course;
     
-    @Temporal(TemporalType.DATE)
     @NotNull(message = "Data de matrícula não pode ser nula.")
-    private Date enrollmentDate;
+    private LocalDate enrollmentDate;
     
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status = EnrollmentStatus.ACTIVE;
     
-    private Double finalGrade;
-    
     public Enrollment() {
-        this.enrollmentDate = new Date();
+        this.enrollmentDate = LocalDate.now();
         this.status = EnrollmentStatus.ACTIVE;
     }
     
-    public Enrollment(User student, Course course, Date enrollmentDate) {
+    public Enrollment(User student, Course course, LocalDate enrollmentDate) {
         this.student = student;
         this.course = course;
         this.enrollmentDate = enrollmentDate;
@@ -78,11 +73,11 @@ public class Enrollment {
         this.course = course;
     }
     
-    public Date getEnrollmentDate() {
+    public LocalDate getEnrollmentDate() {
         return enrollmentDate;
     }
     
-    public void setEnrollmentDate(Date enrollmentDate) {
+    public void setEnrollmentDate(LocalDate enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
     }
     
@@ -92,14 +87,6 @@ public class Enrollment {
     
     public void setStatus(EnrollmentStatus status) {
         this.status = status;
-    }
-    
-    public Double getFinalGrade() {
-        return finalGrade;
-    }
-    
-    public void setFinalGrade(Double finalGrade) {
-        this.finalGrade = finalGrade;
     }
     
     @Override

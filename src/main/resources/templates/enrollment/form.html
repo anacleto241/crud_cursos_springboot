@@ -139,12 +139,13 @@
                                     <label for="student" class="form-label">👨‍🎓 Aluno</label>
                                     <div class="icon-input" data-icon="👨‍🎓">
                                         <select id="student" 
-                                                th:field="*{student.id}" 
+                                                th:field="*{student}" 
                                                 class="form-control select-custom">
                                             <option value="">Selecione o aluno</option>
                                             <option th:each="user : ${users}" 
                                                     th:value="${user.id}" 
-                                                    th:text="${user.name + ' (' + user.email + ')'}">
+                                                    th:text="${user.name + ' (' + user.email + ')'}"
+                                                    th:selected="${enrollment.student != null and enrollment.student.id == user.id}">
                                             </option>
                                         </select>
                                     </div>
@@ -161,12 +162,13 @@
                                     <label for="course" class="form-label">📚 Curso</label>
                                     <div class="icon-input" data-icon="📚">
                                         <select id="course" 
-                                                th:field="*{course.id}" 
+                                                th:field="*{course}" 
                                                 class="form-control select-custom">
                                             <option value="">Selecione o curso</option>
                                             <option th:each="course : ${courses}" 
                                                     th:value="${course.id}" 
-                                                    th:text="${course.name + ' (' + course.modality + ')'}">
+                                                    th:text="${course.name + ' (' + course.modality + ')'}"
+                                                    th:selected="${enrollment.course != null and enrollment.course.id == course.id}">
                                             </option>
                                         </select>
                                     </div>
@@ -214,30 +216,6 @@
                                          th:errors="*{status}"
                                          class="error-message">
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <!-- Nota Final -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="finalGrade" class="form-label">📈 Nota Final (opcional)</label>
-                                    <div class="icon-input" data-icon="📈">
-                                        <input type="number" 
-                                               id="finalGrade" 
-                                               th:field="*{finalGrade}" 
-                                               class="form-control"
-                                               min="0" 
-                                               max="10" 
-                                               step="0.1"
-                                               placeholder="Ex: 8.5">
-                                    </div>
-                                    <div th:if="${#fields.hasErrors('finalGrade')}"
-                                         th:errors="*{finalGrade}"
-                                         class="error-message">
-                                    </div>
-                                    <small class="form-text text-muted">Nota de 0 a 10</small>
                                 </div>
                             </div>
                         </div>

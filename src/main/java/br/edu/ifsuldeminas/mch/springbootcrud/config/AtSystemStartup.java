@@ -1,6 +1,6 @@
 package br.edu.ifsuldeminas.mch.springbootcrud.config;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -134,17 +134,17 @@ public class AtSystemStartup implements CommandLineRunner {
 		Enrollment matricula1 = new Enrollment();
 		matricula1.setStudent(emerson);
 		matricula1.setCourse(curso1);
-		matricula1.setEnrollmentDate(new Date());
+		matricula1.setEnrollmentDate(LocalDate.now());
 		
 		Enrollment matricula2 = new Enrollment();
 		matricula2.setStudent(luiza);
 		matricula2.setCourse(curso2);
-		matricula2.setEnrollmentDate(new Date());
+		matricula2.setEnrollmentDate(LocalDate.now());
 		
 		Enrollment matricula3 = new Enrollment();
 		matricula3.setStudent(noe);
 		matricula3.setCourse(curso3);
-		matricula3.setEnrollmentDate(new Date());
+		matricula3.setEnrollmentDate(LocalDate.now());
 		
 		enrollmentRepository.save(matricula1);
 		enrollmentRepository.save(matricula2);

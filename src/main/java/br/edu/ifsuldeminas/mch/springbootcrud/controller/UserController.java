@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import br.edu.ifsuldeminas.mch.springbootcrud.model.entity.Address;
 import br.edu.ifsuldeminas.mch.springbootcrud.model.entity.User;
 import br.edu.ifsuldeminas.mch.springbootcrud.model.repository.AddressRepository;
 import br.edu.ifsuldeminas.mch.springbootcrud.model.repository.UserRepository;
